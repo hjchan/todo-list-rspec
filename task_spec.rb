@@ -1,5 +1,6 @@
-
+  
 require "rspec"
+require "rspec-given"
 
 require_relative "task"
 
@@ -20,19 +21,31 @@ describe Task do
 
   describe "#description" do
     it "returns the correct description for the task" do
-      expect(task.description).to eq description
+      # expect(task.description).to eq description
     end
   end
 
   describe "#complete?" do
-    it "returns false for incomplete tasks" do
-      expect(task.complete?).to be(false)
+    Given(:task) { Task.new(description) }
+    # it "returns false for incomplete tasks" do
+    #   expect(task.complete?).to be(false)
+    # end
+
+    # it "returns true for completed tasks" do
+    #   task.complete!
+    #   expect(task.complete?).to be(true)
+    # end
+
+    # Given(:task) { task }
+    context "if new task" do 
+      Then {task.complete? == false}
     end
 
-    it "returns true for completed tasks" do
-      task.complete!
-      expect(task.complete?).to be(true)
+    context "if completed task" do
+      When {task.complete!}
+      Then {task.complete? == true}   
     end
+
   end
 
   describe "#complete!" do
